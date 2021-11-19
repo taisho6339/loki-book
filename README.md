@@ -1,4 +1,2 @@
-# Languages
-
-* [English](en/)
-* [Japanese](jp/)
+# Grafana Loki Deep Dive
+Dive into Grafana Loki
