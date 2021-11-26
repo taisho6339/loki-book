@@ -28,4 +28,14 @@ I need to store 20 TB logs per day at last, the cost should be very high so Loki
 
 ### Deployment Mode
 
-[https://grafana.com/docs/loki/next/fundamentals/architecture/](getting-started.md#use-case)
+TBD
+
+We can choose 3 kinds of deployment modes.
+
+The official document can help you to know more detail.
+
+{% embed url="https://grafana.com/docs/loki/next/fundamentals/architecture" %}
+
+### How to install
+
+TBD
