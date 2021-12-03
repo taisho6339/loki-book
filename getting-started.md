@@ -22,7 +22,7 @@ It saves us a lot of money in case of a large number of logs and we don't need t
 
 Loki offloads storage engine to other services.
 
-Therefore,** people who want to store their large number of logs with low cost and hyper-scale storage should use Loki!**
+Therefore, **people who want to store their large number of logs with low cost and hyper-scale storage should use Loki!**
 
 I need to store 20 TB logs per day at last, the cost should be very high so Loki is suitable.
 
