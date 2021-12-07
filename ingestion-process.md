@@ -100,6 +100,32 @@ The logs are going to be chunked and managed in every stream.
 
 The requests from the clients are validated by Distributors.
 
+What points does it validate?
+
+Mainly, it checks the following.
+
+* Label format
+  * invalid format?
+* Log Body
+  * too long?
+* Log timestamp
+  * too future or too old?
+* Rate limit
+
+If the rate limit mode is 'global', distributors are clustered so that they can know the number of healthy instances in the cluster each other and calculate the ingestion rate for all over that.
+
+It means that distributors are clustered for the validation.
+
+If you want to know more detail about the clustering, please see here. TBD
+
+### Requests from Distributors to Ingesters
+
+Ingesters are clustered as well and distributors can know which instances are healthy.
+
+Besides, they use the information to distribute ingestions to ingesters.
+
+
+
 
 
 
