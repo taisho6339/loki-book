@@ -114,7 +114,7 @@ Mainly, it checks the following.
   * too future or too old?
 * Rate limit
 
-If the rate limit mode is 'global', distributors are clustered so that they can know the number of healthy instances in the cluster each other and calculate the ingestion rate for all over that.
+If the rate limit mode is 'global', distributors are clustered so that they can know the number of healthy instances in the cluster and calculate the ingestion rate for all over that.
 
 It means that distributors are clustered for the validation.
 
@@ -162,39 +162,39 @@ The chunks aren't stored in remote storage like AWS S3 immediately.
 
 They are buffered unless they satisfy the conditions and after that flushed to remote storage.
 
-In this section, we will see how Ingester buffer the log chunks.
-
 The memory chunk is structured like this image.
 
 ![](<.gitbook/assets/スクリーンショット 2021-12-10 10.04.15 (1).png>)
 
 It has an array called "Head" and another one called "Blocks".
 
-At first, incoming logs are appended to "Head" with keeping them the raw data.
+At first, incoming logs are appended to "Head" with keeping the raw data.
 
 When its size reaches "chunk\__block_\_size", Ingester compresses the all of elements in "Head" into a block.
 
 If the total size of the memory chunk reaches "chunk\__target\__size", Ingester makes it read-only mode and appends it to a flush queue.
 
-Does buffering logs means that we can't query for recent logs?
+Does buffering logs mean that we can't query for recent logs?
 
-No, it doen't. Ingesters are also queried for logs from queriers.
+No, it doesn't. Ingesters are also queried for logs from queriers.
 
 So, How does it search all over memory chunks in Ingesters efficiently?
 
-The answer is using inverted index.
+The answer is using inverted indexes.
 
 Ingester has inverted indexes in their memory like the following image.
 
 ![](.gitbook/assets/memory\_inverted\_index.png)
 
-It has map structures which maps label value and fingerprints for each label name.
+It has map structures that map label values and fingerprints for each label name.
 
-In addition, the fingerprints are generated as hash of label values for each stream and Ingester has also has map data which maps fingerprints to actual streams.
+In addition, the fingerprints are generated as hash values of label key-value pairs for each stream and Ingester also has map data that maps fingerprints to actual streams.
 
-It means that it can get label matched streams efficiently using this indexes.
+Here is the flow of how Ingester extracts the matched chunks from memory.
 
-
+1. Select the matched fingerprints for each label value
+2. Extract intersecting fingerprints across all of them
+3. Resolve the matched streams and chunks in those from the fingerprints
 
 ### Flushing Chunks
 
