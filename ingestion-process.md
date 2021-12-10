@@ -9,7 +9,7 @@ You can get the following understandings.
 * The components to ingest
 * Ingestion mechanism
 * Log chunk buffering & flushing
-* Write Ahead Log mechanism
+* Write-Ahead Log mechanism
 * Unordered logs and Orderered logs
 
 ### Components for ingestion
@@ -55,6 +55,8 @@ It is an optional component but very effective for query performance.
 There are four types of cache in Loki.
 
 You can know more details about it.
+
+// TODO:&#x20;
 
 [Loki's Cache](ingestion-process.md#overview)
 
@@ -116,15 +118,89 @@ If the rate limit mode is 'global', distributors are clustered so that they can 
 
 It means that distributors are clustered for the validation.
 
-If you want to know more detail about the clustering, please see here. TBD
+// TODO:
+
+If you want to know more detail about the clustering, please see here.&#x20;
 
 ### Requests from Distributors to Ingesters
 
 Ingesters are clustered as well and distributors can know which instances are healthy.
 
-Besides, they use the information to distribute ingestions to ingesters.
+They have their own tokens and distributors distribute traffics to some of them by using "Consistent Hash" algorithm.
+
+How does it route?
+
+At first, it generates the hash value from tenantID and stream(label key values).
+
+![](<.gitbook/assets/スクリーンショット 2021-12-08 9.33.56.png>)
+
+And then, the Distributor requires the matched Ingesters with the stream hash.
+
+Once the stream token matches with an ingester, in addition, it requires more for the replication factor in a clockwise direction.
+
+It means that the distributor sends logs to some ingesters in duplicate to replicate them.
+
+Finally, it regards the request as successful if more ingesters than half return 200 status.
+
+![](<.gitbook/assets/スクリーンショット 2021-12-08 9.38.03.png>)
+
+### Ingester Request Handling
+
+Let's see how it handles the requests.
+
+At first,  coming logs are appended to "Memory Chunk" by each stream.
+
+![](<.gitbook/assets/スクリーンショット 2021-12-10 9.35.44.png>)
+
+In addition, the write-ahead logs for each log are written on Ingester's disk to prevent it from losing log data unexpectedly. (described later)
+
+Lastly, if the appending is succeeded, ingester returns success as gRPC response.
+
+### Chunk Buffering
+
+The chunks aren't stored in remote storage like AWS S3 immediately.
+
+They are buffered unless they satisfy the conditions and after that flushed to remote storage.
+
+In this section, we will see how Ingester buffer the log chunks.
+
+The memory chunk is structured like this image.
+
+![](<.gitbook/assets/スクリーンショット 2021-12-10 10.04.15 (1).png>)
+
+It has an array called "Head" and another one called "Blocks".
+
+At first, incoming logs are appended to "Head" with keeping them the raw data.
+
+When its size reaches "chunk\__block_\_size", Ingester compresses the all of elements in "Head" into a block.
+
+If the total size of the memory chunk reaches "chunk\__target\__size", Ingester makes it read-only mode and appends it to a flush queue.
+
+Does buffering logs means that we can't query for recent logs?
+
+No, it doen't. Ingesters are also queried for logs from queriers.
+
+So, How does it search all over memory chunks in Ingesters efficiently?
+
+The answer is using inverted index.
+
+Ingester has inverted indexes in their memory like the following image.
+
+![](.gitbook/assets/memory\_inverted\_index.png)
+
+It has map structures which maps label value and fingerprints for each label name.
+
+In addition, the fingerprints are generated as hash of label values for each stream and Ingester has also has map data which maps fingerprints to actual streams.
+
+It means that it can get label matched streams efficiently using this indexes.
 
 
+
+### Flushing Chunks
+
+
+
+### Write-Ahead Log
 
 
 
