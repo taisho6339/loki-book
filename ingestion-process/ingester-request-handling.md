@@ -1,4 +1,4 @@
-# Ingester Request Handling
+# 3. Ingester Request Handling
 
 Let's see how it handles the requests in ingesters.
 

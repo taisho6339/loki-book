@@ -31,13 +31,42 @@ Query Frontend splits queries and schedules them to some queriers and aggregates
 
 Querier is an actual query processor.
 
-#### AWS S3
+#### AWS S3 as Storage Engine
 
-AWS S3 is the storage for chunks and inverted indexes.
+The logs are stored in this persistently.
 
-In addition, there are three kinds of cache and they are all Memcached here. (But we can use Redis or FIFO cache)
+This layer also supports Cassandra, GCS, DynamoDB, and so on... as the storage.
 
-#### Query Path
+Here are the supported stores.
+
+[Supported Stores](https://grafana.com/docs/loki/latest/operations/storage/)
+
+#### Memcached as Cache
+
+It is an optional component but very effective for query performance.
+
+There are four types of cache in Loki.
+
+You can know more details about it.
+
+// TODO:&#x20;
+
+[Loki's Cache](./#overview)
+
+### Read Path
+
+Here is the Read Path in Loki.
+
+1. A query-frontend receives a query request and splits them into someones and enqueue
+2. Some querier get some queries from the queue
+3. A querier requests for all of the ingesters to select unflushed logs
+4. The querier gets the target chunks using inverted indexes in index cache or BoltDB
+5. The querier downloads the chunks from the chunk cache or AWS S3
+6. The querier filters them and returns them to the query-frontend
+7. The query-frontend aggregates all of the results and sort and remove duplicate
+8. The query-frontend cache the query result and returns it to the client
+
+In further sections, I'll give you more detailed mechanisms.
 
 
 

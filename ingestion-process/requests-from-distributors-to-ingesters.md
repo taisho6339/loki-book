@@ -1,4 +1,4 @@
-# Requests from Distributors to Ingesters
+# 2. Requests from Distributors to Ingesters
 
 Ingesters are clustered as well and distributors can know which instances are healthy.
 

@@ -1,4 +1,4 @@
-# Chunk Buffering
+# 4. Chunk Buffering
 
 The chunks aren't stored in remote storage like AWS S3 immediately.
 
