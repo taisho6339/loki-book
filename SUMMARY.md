@@ -1,7 +1,6 @@
 # Table of contents
 
-* [Tips](README.md)
-* [Grafana Loki Deep Dive](<README (1).md>)
+* [Grafana Loki Deep Dive](README.md)
 * [Introduction](introduction.md)
 * [Getting Started](getting-started.md)
 * [Ingestion Process](ingestion-process/README.md)
@@ -14,6 +13,7 @@
   * [How to retain data in an ingester](ingestion-process/how-to-retain-data-in-an-ingester.md)
   * [Unordered Write](ingestion-process/unordered-write.md)
 * [Query Process](query-process.md)
-* [How to cluster](how-to-cluster.md)
-* [Cache Strategy](cache-strategy.md)
-* [How to manage unordered logs](how-to-manage-unordered-logs.md)
+* [Tips](tips/README.md)
+  * [How to cluster](tips/how-to-cluster.md)
+  * [Cache Strategy](tips/cache-strategy.md)
+  * [How to manage unordered logs](tips/how-to-manage-unordered-logs.md)
