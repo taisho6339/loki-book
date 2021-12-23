@@ -2,7 +2,7 @@
 
 ### Overview
 
-In this section, I'll introduce the ingestion process of Loki to you.
+In this chapter, I'll introduce the ingestion process of Loki to you.
 
 You can get the following understandings.
 
@@ -60,3 +60,14 @@ You can know more details about it.
 
 [Loki's Cache](./#overview)
 
+### Write Path
+
+Write path overview is the listed.
+
+1. The client sends logs to Loki's distributor
+2. The distributor validates the post request and routes it to appropriate ingesters
+3. The ingester validates the request
+4. The ingester write it on WAL and buffers it into a memory chunk
+5. The ingester flush the memory chunks to AWS S3
+
+In the next section, let's dive into more detailed mechanisms.
