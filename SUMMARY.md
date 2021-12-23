@@ -10,6 +10,8 @@
   * [Chunk Buffering](ingestion-process/chunk-buffering.md)
   * [Flushing Chunks](ingestion-process/flushing-chunks.md)
   * [Write-Ahead Log](ingestion-process/write-ahead-log.md)
+  * [How to retain data in an ingester](ingestion-process/how-to-retain-data-in-an-ingester.md)
+  * [Unordered Write](ingestion-process/unordered-write.md)
 * [How to cluster](how-to-cluster.md)
 * [Cache Strategy](cache-strategy.md)
 * [How to manage unordered logs](how-to-manage-unordered-logs.md)

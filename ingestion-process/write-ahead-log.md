@@ -55,5 +55,15 @@ That's how the snapshot of unflushed chunks on memory at that time remains.
 
 The recovery process is called in starting ingester process.
 
+Before the ingester is ready, it load the chunks from segments and checkpoints and then push them to the memory.
+
+After that, they are managed as normal memory chunks.
+
+**In addition, if the recovery process is failed, the starting process will be failed as well.**
+
+That's how Loki recovers the unflushed chunks from WAL.
+
+![](<../.gitbook/assets/スクリーンショット 2021-12-23 17.00.42.png>)
+
 
 
