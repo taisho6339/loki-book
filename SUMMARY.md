@@ -13,7 +13,7 @@
   * [How to retain data in an ingester](ingestion-process/how-to-retain-data-in-an-ingester.md)
   * [Unordered Write](ingestion-process/unordered-write.md)
 * [Query Process](query-process/README.md)
-  * [1. Split a query into someones](query-process/1.-split-a-query-into-someones.md)
+  * [1. Split a query into someones](query-process/how-to-split-a-query.md)
   * [2. Schedule some queries to some queriers](query-process/2.-schedule-some-queries-to-some-queriers.md)
   * [How to schedule query](query-process/how-to-schedule-query.md)
   * [How to use inverted index](query-process/how-to-use-inverted-index.md)
