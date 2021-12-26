@@ -27,6 +27,8 @@ Ingesters are here to be queried for unflushed logs.
 
 Query Frontend splits queries and schedules them to some queriers and aggregates the results from them.
 
+Processing some queries in parallel gives us dramatic improvement in performance.
+
 #### Querier
 
 Querier is an actual query processor.
@@ -57,8 +59,8 @@ You can know more details about it.
 
 Here is the Read Path in Loki.
 
-1. A query-frontend receives a query request and splits them into someones and enqueue
-2. Some querier get some queries from the queue
+1. A query-frontend receives a query request and splits them into someones
+2. The query-frontend enqueue some queries and some queriers get some queries from the queue
 3. A querier requests for all of the ingesters to select unflushed logs
 4. The querier gets the target chunks using inverted indexes in index cache or BoltDB
 5. The querier downloads the chunks from the chunk cache or AWS S3
@@ -67,10 +69,3 @@ Here is the Read Path in Loki.
 8. The query-frontend cache the query result and returns it to the client
 
 In further sections, I'll give you more detailed mechanisms.
-
-
-
-
-
-
-
