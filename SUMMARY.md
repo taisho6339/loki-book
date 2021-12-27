@@ -15,7 +15,6 @@
 * [Query Process](query-process/README.md)
   * [1. Split a query into someones](query-process/how-to-split-a-query.md)
   * [2. Schedule some queries to some queriers](query-process/2.-schedule-some-queries-to-some-queriers.md)
-  * [How to schedule query](query-process/how-to-schedule-query.md)
   * [How to use inverted index](query-process/how-to-use-inverted-index.md)
 * [Tips](tips/README.md)
   * [How to cluster](how-to-cluster.md)

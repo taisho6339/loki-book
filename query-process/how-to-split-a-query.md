@@ -1,10 +1,10 @@
 # 1. Split a query into someones
 
+### Overview
+
 Query-frontend receives a query request and then splits them into someones.
 
-The reason why it splits a query is that it increases the query parallelism and more and more queriers can process in parallel.
-
-It gives you a performance improvement.
+The reason why it splits a query is that it increases the query parallelism and more and more queriers can process in parallel. It gives you a performance improvement.
 
 There are two main strategies to split as listed.
 
