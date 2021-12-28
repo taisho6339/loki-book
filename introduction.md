@@ -6,20 +6,18 @@ However, it is hard to run in production because it is constructed with many mic
 
 Therefore, I've been investigating for a long time to run in my production environment, which is now 2 TB / a day and aims to be 20 TB / a day.
 
-I aim to complement the official document and make the readers plan capacity, select parameters, and run Loki stably by themselves by providing this book.
+I aim to complement the official document and make the readers plan capacity, select parameters, and run Loki stably by themselves to provide this book.
 
 This book shows you in the following order.
 
 You can read only the part which you want to know.
 
-* Getting Started
+* What's Loki?
 * Dive into ingestion process
 * Dive into query process
 * Cache construction
 * How to improve query performance
 * Consider failure design
-* Retention management
-* Metrics and alerts based on logs
 * Monitoring for Loki
 * Useful tools
 
@@ -40,6 +38,3 @@ I expect the readers as follows.
 * Index Storage: BoltDB Shipper + AWS S3
 * Cache: Memcache 1.6.12
 * Deployment mode: Microservices
-
-
-

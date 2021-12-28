@@ -19,6 +19,7 @@
   * [4. Determine the chunks to fetch using inverted indexes](query-process/4.-determine-the-chunks-to-fetch-using-inverted-indexes.md)
   * [5. Filter the matched chunks](query-process/5.-filter-the-matched-chunks.md)
   * [6. Aggregate the results from queriers](query-process/6.-aggregate-the-results-from-queriers.md)
+* [Failure Design](failure-design.md)
 * [Tips](tips/README.md)
   * [How to cluster](how-to-cluster.md)
   * [Cache Strategy](cache-strategy.md)
