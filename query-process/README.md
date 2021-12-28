@@ -25,9 +25,16 @@ Ingesters are here to be queried for unflushed logs.
 
 #### Query Frontend
 
-Query Frontend splits queries and schedules them to some queriers and aggregates the results from them.
+This is an optional component but very important for performance.
 
-Processing some queries in parallel gives us dramatic improvement in performance.
+It is a proxy for queriers. Here are its jobs.
+
+* It splits queries and schedules them to some queriers and aggregates the results from them
+* It retries query requests if they fail
+* It caches query results
+* It manages rate limit
+
+Especially processing some queries in parallel gives us dramatic improvement in performance.
 
 #### Querier
 
