@@ -2,7 +2,7 @@
 
 * [Grafana Loki Deep Dive](README.md)
 * [Introduction](introduction.md)
-* [What is Grafana Loki?](what-is-grafana-loki.md)
+* [What is Grafana Loki?](getting-started.md)
 * [Ingestion Process](ingestion-process/README.md)
   * [1. Requests from Clients to Distributors](ingestion-process/requests-from-clients-to-distributors.md)
   * [2. Requests from Distributors to Ingesters](ingestion-process/requests-from-distributors-to-ingesters.md)
