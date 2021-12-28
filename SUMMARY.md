@@ -2,7 +2,7 @@
 
 * [Grafana Loki Deep Dive](README.md)
 * [Introduction](introduction.md)
-* [Getting Started](getting-started.md)
+* [What is Grafana Loki?](what-is-grafana-loki.md)
 * [Ingestion Process](ingestion-process/README.md)
   * [1. Requests from Clients to Distributors](ingestion-process/requests-from-clients-to-distributors.md)
   * [2. Requests from Distributors to Ingesters](ingestion-process/requests-from-distributors-to-ingesters.md)
@@ -16,6 +16,7 @@
   * [1. Split a query into someones](query-process/how-to-split-a-query.md)
   * [2. Schedule some queries to some queriers](query-process/2.-schedule-some-queries-to-some-queriers.md)
   * [3. Requests query for all of ingesters](query-process/3.-requests-query-for-all-of-ingesters.md)
+  * [4. Determine the chunks to fetch using inverted indexes](query-process/4.-determine-the-chunks-to-fetch-using-inverted-indexes.md)
   * [How to use inverted index](query-process/how-to-use-inverted-index.md)
 * [Tips](tips/README.md)
   * [How to cluster](how-to-cluster.md)

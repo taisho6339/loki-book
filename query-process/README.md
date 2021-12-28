@@ -70,9 +70,8 @@ Here is the Read Path in Loki.
 2. The query-frontend enqueue some queries and some queriers get some queries from the queue
 3. A querier requests for all of the ingesters to select unflushed logs
 4. The querier gets the target chunks using inverted indexes in index cache or BoltDB
-5. The querier downloads the chunks from the chunk cache or AWS S3
-6. The querier filters them and returns them to the query-frontend
-7. The query-frontend aggregates all of the results and sort and remove duplicate
-8. The query-frontend cache the query result and returns it to the client
+5. The querier downloads the chunks from the chunk cache or AWS S3 and filters them
+6. The query-frontend aggregates all of the results and sort and remove duplicate
+7. The query-frontend cache the query result and returns it to the client
 
 In further sections, I'll give you more detailed mechanisms.

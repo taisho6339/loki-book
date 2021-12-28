@@ -1,4 +1,4 @@
-# Getting Started
+# What is Grafana Loki?
 
 ### What is Grafana Loki?
 
@@ -28,14 +28,8 @@ I need to store 20 TB logs per day at last, the cost should be very high so Loki
 
 ### Deployment Mode
 
-TBD
-
 We can choose 3 kinds of deployment modes.
 
-The official document can help you to know more detail.
+The official document can help you to know more detail but I'll clarify the microservice mode in this book.
 
 {% embed url="https://grafana.com/docs/loki/next/fundamentals/architecture" %}
-
-### How to install
-
-TBD
