@@ -8,6 +8,6 @@ Ingesters have unflushed chunks in their memories and they are not in both cache
 
 In addition, the ingesters have also inverted indexes for unflushed chunks so they select logs using them when receiving requests.
 
-{% content-ref url="../ingestion-process/ingesters-buffer-log-chunks.md" %}
-[ingesters-buffer-log-chunks.md](../ingestion-process/ingesters-buffer-log-chunks.md)
+{% content-ref url="../ingestion-process/buffer-log-chunks.md" %}
+[buffer-log-chunks.md](../ingestion-process/buffer-log-chunks.md)
 {% endcontent-ref %}
