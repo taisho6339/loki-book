@@ -11,7 +11,6 @@ You can get the following understandings here.
 * How to schedule query
 * How to use inverted index
 * How to aggregate the results from queriers
-* What is boltdb-shipper and how it works
 
 ### Components for query
 
@@ -25,7 +24,7 @@ Ingesters are here to be queried for unflushed logs.
 
 #### Query Frontend
 
-This is an optional component but very important for performance.
+This is an optional component but very important for query performance.
 
 It is a proxy for queriers. Here are its jobs.
 
@@ -44,7 +43,7 @@ Querier is an actual query processor.
 
 The logs are stored in this persistently.
 
-This layer also supports Cassandra, GCS, DynamoDB, and so on... as the storage.
+This layer also supports Cassandra, GCS, DynamoDB, and other products as storage.
 
 Here are the supported stores.
 
@@ -58,9 +57,9 @@ There are four types of cache in Loki.
 
 You can know more details about it.
 
-// TODO:&#x20;
-
-[Loki's Cache](./#overview)
+{% content-ref url="../cache-strategy.md" %}
+[cache-strategy.md](../cache-strategy.md)
+{% endcontent-ref %}
 
 ### Read Path
 

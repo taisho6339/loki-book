@@ -1,4 +1,4 @@
-# 4. Determine the chunks to fetch using inverted indexes
+# Determine the chunks to fetch using inverted indexes
 
 ### Overview
 
@@ -6,7 +6,7 @@ After querying for all of the ingesters, a querier tries to select flushed chunk
 
 ### What is "inverted index"?  Why does Loki use it?
 
-"Inverted index" is also used in fulltext-search engine like Elasticsearch.
+"Inverted index" is also used in full-text search engines like Elasticsearch.
 
 This is the data structure, which aims to search logs based on label values efficiently.
 
@@ -14,23 +14,15 @@ In Loki, the log chunks have unique IDs to identify.
 
 The inverted index has the mapping between label key-values and chunk IDs so that we can select the chunks with label keys or values in performant.&#x20;
 
-If Loki doesn't use it, it would spend a lot of times to retreieve large amount of logs.
-
-### Overall Flow to search in querier
-
-1. Identify the target stream IDs by label key-values in query
-2. Identify the chunk IDs by the stream IDs and time range in query
-3. Download from chunk cache or BoltDB using the chunk IDs
+If Loki doesn't use it, it would spend a lot of time retrieving large amount of logs.
 
 ### The structure of the inverted index
 
 To understand the structure, we need to know "series-id" and "chunk-key".
 
-Series-id is the id of a stream and chunk-key is the unique key of a chunk.
-
-Let me explain more detail.
-
 #### Series ID
+
+Series-id is the id of a stream.
 
 The series-id is constructed with the hash value of label name and value pairs.
 
@@ -38,7 +30,9 @@ The series-id is constructed with the hash value of label name and value pairs.
 
 #### Chunk Key
 
-The chunk key is constructed with the Tenant ID, the hash value of label key and value pairs, chunk created time, and chunk closed time.
+Chunk-key is the unique key of a chunk.
+
+The chunk key is constructed with the tenant-id, the hash value of label key and value pairs, chunk created time, and chunk closed time.
 
 ![](../.gitbook/assets/chunk-key.png)
 
@@ -46,29 +40,31 @@ The chunk key is constructed with the Tenant ID, the hash value of label key and
 
 Inverted index is managed as a table like DynamoDB.&#x20;
 
-Also, there are some kinds of tables for that and they are for identifying series-ids and chunk keys.
+Also, there are some kinds of tables and they are to identify series-ids and chunk keys.
 
 At first, here is the table definition to identify series-ids by label names or label values.
 
 ![A table to identify SeriesID by label key-value](<../.gitbook/assets/スクリーンショット 2021-12-28 16.42.49 (1).png>)
 
-It has three columns and its row is the unique with "hash value" and "range value" columns as well as DynamoDB.
+It has three columns and its row is unique with "hash value" and "range value" columns as well as DynamoDB.
 
 We can search with a prefix of the range value and sort the results with it.
 
 An actual table example helps us to understand.
 
-![](<../.gitbook/assets/スクリーンショット 2021-12-28 21.05.42.png>)
+![](../.gitbook/assets/inverted-index.png)
 
-It tells us that each label key-value pair creates each table row.
+There are all of the mappings between each stream-id and each label key-value pair.
 
-It means that a high cardinarity label causes too many rows in this table and decreases performance.
+For example, the stream-ids which have "service=keystone" in their labels like "{service=keystone, hostname=host1}" and "{service=keystone, hostname=host2}" are recorded with "service" hash value and "keystone" value.
+
+It means that high cardinality labels cause too many rows and decreases performance.
 
 Second, here is the table to identify chunk-keys by series-ids.
 
 ![](<../.gitbook/assets/スクリーンショット 2021-12-28 21.14.55.png>)
 
-It is scanned with series-ids, tenant-ids, and time range.
+It can be scanned with series-ids, tenant-ids, and time range to get chunk keys.
 
 ### How to use these structures to select logs
 
@@ -90,23 +86,27 @@ Second, it splits label pairs and retrieves the matched stream-ids for each pair
 
 ![](<../.gitbook/assets/スクリーンショット 2021-12-28 21.30.43.png>)
 
-For example, it scans the table to get matched stream-ids with "service=keystone".
+In this case, it scans the table to get matched stream-ids with "service=keystone" or "hostname=host1".
 
 It searches the rows which have "service" in "hash value", hashed "keystone" in "range value", and "keystone" in "value" column.
 
+On the other hand, it also searches the rows which have "hostname" in "hash value", hashed "host1" in "range value", and "host1" in "value" column in parallel.
+
 Of course, the index cache is scanned at first and if not found, BoltDB is called and the results will be cached.
 
-![](<../.gitbook/assets/スクリーンショット 2021-12-28 21.32.49.png>)
+![](<../.gitbook/assets/スクリーンショット 2021-12-29 22.42.55.png>)
 
-In this case, "c79abadeff" is the matched series-id.
+The result series-ids for "service=keystone" are "c79abadeff" and "bffjk12ass".
 
-It executes this search for all pairs in parallel like this and then, only the common results will be left.
+On the other hand, the result for "hostname=host1" are "c79abadeff" and "vk1abadeff".
+
+The querier remains only the stream-id in both results so "c79abadeff" is the final answer here.
 
 ![](<../.gitbook/assets/スクリーンショット 2021-12-28 21.41.26.png>)
 
 The series-ids are used to select chunk keys.
 
-For example, here is an example to match the series-id "c79abadeff" and 5 min after 2021/10/26 21:52.
+Here is an example to match the series-id "c79abadeff" and 5 min after 2021/10/26 21:52.
 
 ![](<../.gitbook/assets/スクリーンショット 2021-12-28 21.54.12.png>)
 
@@ -120,7 +120,7 @@ In the previous section, I mentioned query-sharding, which split a query into so
 
 A query will be automatically split by the shard number in query-frontend.
 
-Therefore, when a querier receives a query, it has the shard number.
+Therefore, when a querier receives a query request, it knows the shard number.
 
 In addition, the inverted index table actually has the shard number in "range value" column so that the querier can get the series-ids that are split by that.
 

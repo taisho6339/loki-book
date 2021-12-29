@@ -1,16 +1,16 @@
-# 2. Schedule some queries to some queriers
+# Schedule queries to queriers
 
 ### Overview
 
 The split queries are enqueued to a request queue by query-frontend.
 
-Some queriers, which are connected to the query-frontend via bidirectional gRPC, get a query and process it.&#x20;
+Some queriers, which are connected to the query-frontend via bidirectional gRPC, get and process them.&#x20;
 
 In addition, a querier creates a goroutine for each query so that it can handle some queries in parallel.&#x20;
 
 When the query is completed, it returned the result to the query-frontend via gRPC.&#x20;
 
-The queued query request has an origin query-frontend address so that it can return it to the correct instance.
+The queued query request has an original query-frontend address so that it can return it to the correct instance.
 
 Here is the overall figure for processing a query.
 
@@ -27,13 +27,13 @@ That's how we can use queriers efficiently.
 
 In 2.4.0 newer version, query-scheduler is released.&#x20;
 
-This is the component that cuts out the query queue from query-frontend.
+This is the component that cuts out the query request queue from query-frontend.
 
 Here is how it works.
 
 ![How to schedule queries with query-scheduler](../.gitbook/assets/query\_scheduler\_v2.drawio.png)
 
-Query-schedulers are newly added and they have each request queue.&#x20;
+Query-schedulers have each request queue.&#x20;
 
 At first, a query-frontend receives a query request and enqueues it to a request queue.
 

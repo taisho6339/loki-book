@@ -1,4 +1,4 @@
-# 5. Filter the matched chunks
+# Filter the matched chunks
 
 ### Overview
 
@@ -12,11 +12,11 @@ It is constructed with the chunks from all of the ingesters which are actual chu
 
 ![](<../.gitbook/assets/スクリーンショット 2021-12-28 23.47.30.png>)
 
-The lazy chunks don't have real ones at first but it will download them from cache or BoltDB once it is loaded in the iteration process.
+The lazy chunks don't have real ones at first but they will download them from cache or BoltDB once they are loaded in the iteration process.
 
 The load process requests actual chunks for chunk cache at first, if no chunk is found in that, it asks AWS S3 for them.
 
-If it downloads them from AWS S3, it will write them back to chunk cache.
+If the querier downloads them from AWS S3, it will write them back to chunk cache.
 
 After creating the iterator, the querier will start to load it to return a query result.
 

@@ -1,6 +1,6 @@
 # Write-Ahead Log
 
-Some people are curious about what happens to the logs if Ingester dies before they are completely flushed. Write-Ahead log is for such a situation!
+Some people are curious about what happens to the logs if an ingester dies before they are completely flushed. Write-Ahead log addresses for such a situation.
 
 Here are the features of WAL.
 
@@ -9,13 +9,11 @@ Here are the features of WAL.
 * Run recovery process when an ingester starts
 * Purge unused WAL files periodically
 
-There are two important file types, which are "segment" and "checkpoint".
+There are two important files, which are "segment" and "checkpoint".
 
 ### Segment files
 
-At first, let's start with "segment".
-
-#### 1. A "segment" file is created and WAL is appended to it, with **raw data.**
+#### 1. A "segment" file is created and WAL is appended to it, with **raw data**
 
 ![](../.gitbook/assets/image.png)
 
@@ -25,27 +23,25 @@ At first, let's start with "segment".
 
 ### Checkpoints
 
-The second is what "checkpoint" is and how it works.
-
 WAL mechanism purges segment files periodically and there is a goroutine for that.
 
-#### 1. Force to advance to a new segment file
+A checkpoint file is created when the process runs.
 
-So that the older segment file won't be written anymore and deleting the writing segment file won't happen.
+#### 1. Force to advance to a new segment file to start purge process
+
+So that the older segment file won't be written anymore and the writing segment file won't be deleted.
 
 ![](<../.gitbook/assets/image (7).png>)
 
 #### 2. A checkpoint file is created based on the streams on memory.&#x20;
 
-A chunk in that is constructed with memory chunk, which has "head" and "block" array as mentioned in the previous chapter.
-
-It means that "checkpoint" is a snapshot of memory chunks at that time and it is compressed as well. (but head elements are not compressed either)
+It means that "checkpoint" is a snapshot of memory chunks at that time and it is compressed as well. (but "head" elements are not compressed either)
 
 ![](<../.gitbook/assets/スクリーンショット 2021-12-23 16.07.18.png>)
 
 #### 3. Purge unused files
 
-It deletes the files except the newest segment and checkpoint.
+It deletes the files without the newest segment and checkpoint.
 
 That's how the snapshot of unflushed chunks on memory at that time remains.
 
@@ -53,15 +49,15 @@ That's how the snapshot of unflushed chunks on memory at that time remains.
 
 ### How to recover from WAL
 
-The recovery process is called in starting ingester process.
+The recovery process is called in starting process of an ingester.
 
-Before the ingester is ready, it load the chunks from segments and checkpoints and then push them to the memory.
+Before the ingester is ready, it loads the logs from segments and checkpoints and then pushes them to the memory chunks.
 
-After that, they are managed as normal memory chunks.
+After that, they are managed as well as normal memory chunks.
 
 **In addition, if the recovery process is failed, the starting process will be failed as well.**
 
-That's how Loki recovers the unflushed chunks from WAL.
+That's how Loki recovers the unflushed logs from WAL.
 
 ![](<../.gitbook/assets/スクリーンショット 2021-12-23 17.00.42.png>)
 
