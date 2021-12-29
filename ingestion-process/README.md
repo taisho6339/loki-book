@@ -28,21 +28,23 @@ Let me introduce them in order.
 
 These components collect logs from your applications and send them to Loki via Distributor's HTTP endpoint.
 
-You can build your own client because of sending via the API.
+Sending via the API allows us to build our own client.
 
 #### Distributor
 
-This component has the responsibility to validate the ingestion request and distribute the requests to appropriate ingesters.
+This component has the responsibility to validate the ingestion requests and distribute them to appropriate ingesters.
 
 #### Ingester
 
 This component has the responsibility to post logs to the storage engine like S3 and cache them to the chunk cache. (Memcached, Redis, etc)
 
+In addition, it buffers those logs on memory temporally.
+
 #### AWS S3 as Storage Engine
 
 The logs are stored in this persistently.
 
-This layer also supports Cassandra, GCS, DynamoDB, and so on... as the storage.
+This layer also supports Cassandra, GCS, DynamoDB, and the other products.
 
 Here are the supported stores.
 
@@ -56,9 +58,9 @@ There are four types of cache in Loki.
 
 You can know more details about it.
 
-// TODO:&#x20;
-
-[Loki's Cache](./#overview)
+{% content-ref url="../cache-strategy.md" %}
+[cache-strategy.md](../cache-strategy.md)
+{% endcontent-ref %}
 
 ### Write Path
 

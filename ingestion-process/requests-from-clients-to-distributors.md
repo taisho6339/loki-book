@@ -58,4 +58,6 @@ It means that distributors are clustered for the validation.
 
 If you want to know more detail about the clustering, please see here.&#x20;
 
-// TODO:
+{% content-ref url="../clustering.md" %}
+[clustering.md](../clustering.md)
+{% endcontent-ref %}

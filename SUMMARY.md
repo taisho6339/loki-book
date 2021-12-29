@@ -1,7 +1,6 @@
 # Table of contents
 
 * [Grafana Loki Deep Dive](README.md)
-* [Introduction](introduction.md)
 * [What is Grafana Loki?](getting-started.md)
 * [Ingestion Process](ingestion-process/README.md)
   * [1. Requests from Clients to Distributors](ingestion-process/requests-from-clients-to-distributors.md)
@@ -19,8 +18,8 @@
   * [4. Determine the chunks to fetch using inverted indexes](query-process/4.-determine-the-chunks-to-fetch-using-inverted-indexes.md)
   * [5. Filter the matched chunks](query-process/5.-filter-the-matched-chunks.md)
   * [6. Aggregate the results from queriers](query-process/6.-aggregate-the-results-from-queriers.md)
-* [Failure Design](failure-design.md)
-* [Tips](tips/README.md)
-  * [How to cluster](how-to-cluster.md)
-  * [Cache Strategy](cache-strategy.md)
-  * [How to manage unordered logs](how-to-manage-unordered-logs.md)
+* [Cache Strategy](cache-strategy.md)
+* [Design for failure](design-for-failure.md)
+* [Performance Improvement](performance-improvement.md)
+* [Monitoring](monitoring.md)
+* [Clustering](clustering.md)
