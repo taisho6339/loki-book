@@ -72,4 +72,4 @@ Write path overview is the listed.
 4. The ingester write it on WAL and buffers it into a memory chunk
 5. The ingester flush the memory chunks to AWS S3
 
-In the next section, let's dive into more detailed mechanisms.
+In further sections, let's dive into more detailed mechanisms.

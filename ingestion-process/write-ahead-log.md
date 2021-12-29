@@ -4,7 +4,7 @@ Some people are curious about what happens to the logs if Ingester dies before t
 
 Here are the features of WAL.
 
-* Written in Ingester's disk space when it receives post requests.
+* Written in ingester's disk space when it receives post requests.
 * Not stop the ingestion flow, unlike typical WAL
 * Run recovery process when an ingester starts
 * Purge unused WAL files periodically

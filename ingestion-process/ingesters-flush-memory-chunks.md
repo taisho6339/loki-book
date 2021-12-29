@@ -1,6 +1,6 @@
-# 5. Flushing Chunks
+# Ingesters flush memory chunks
 
-When the chunks are flushed to AWS S3?
+### When the chunks are flushed to AWS S3?
 
 There are main 4 conditions for that.
 
@@ -9,7 +9,7 @@ There are main 4 conditions for that.
 * Reach \`chunk\_max\_age\` after the creation
 * Force flush (eg. flush at process shutdown
 
-Of course, they aren't flushed immediately when match any of the conditions.
+Of course, they aren't flushed immediately when they match any of the conditions.
 
 They are enqueued to a flush queue and flushed in order.
 
@@ -23,11 +23,11 @@ Another goroutine observes the flush queue. It takes a chunk from the queue and 
 
 There are 3 steps in the flow.
 
-1. Create an inverted index entry for each chunk and Add to BoltDB on Ingester's disk
+1. Create an inverted index entry for each chunk and add it to BoltDB on Ingester's disk
 2. Post the chunk to S3
-3. Write back the chunk to Memcache, it is managed as chunk cache
+3. Write it back to chunk cache
 
-The inverted index is different from the memory chunk.
+Of course, the inverted index is different from the memory chunk.
 
 This is described later chapter, Query Process.
 
