@@ -16,7 +16,9 @@ It acts as a write cache in the ingesters and also as a read cache in the querie
 
 In the ingestion process, the inverted indexes are written on this for persistency.
 
-Therefore, it periodically ships them to AWS S3 and removes the uploaded files.
+It periodically checks the differences between local files and AWS S3.
+
+If there are some differences, it will ship them to AWS S3 and remove the uploaded files from local.
 
 ![](<.gitbook/assets/スクリーンショット 2021-12-29 23.21.57.png>)
 

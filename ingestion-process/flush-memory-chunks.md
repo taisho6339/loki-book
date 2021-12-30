@@ -1,4 +1,4 @@
-# Ingesters flush memory chunks
+# Flush memory chunks
 
 ### When the chunks are flushed to AWS S3?
 
@@ -31,3 +31,8 @@ Of course, the inverted index is different from the memory chunk.
 
 This is described later chapter, Query Process.
 
+#### Avoid flushing chunks in duplicate
+
+Distributors route logs to multiple ingesters so it can cause chunk duplication.
+
+The ingester doesn't flush a chunk if the chunk is already cached in the chunk cache so that it avoids flushing duplicate chunks.

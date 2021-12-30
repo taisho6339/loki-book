@@ -104,7 +104,7 @@ The querier remains only the stream-id in both results so "c79abadeff" is the fi
 
 ![](<../.gitbook/assets/スクリーンショット 2021-12-28 21.41.26.png>)
 
-The series-ids are used to select chunk keys.
+The series-id is used to select chunk keys.
 
 Here is an example to match the series-id "c79abadeff" and 5 min after 2021/10/26 21:52.
 
