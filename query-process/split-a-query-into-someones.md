@@ -1,4 +1,4 @@
-# Split a query into someones
+# Query splitting
 
 ### Overview
 

@@ -1,4 +1,4 @@
-# Distributors route logs to Ingesters
+# Routing logs to Ingesters
 
 ### Overview
 

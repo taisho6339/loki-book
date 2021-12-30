@@ -1,4 +1,6 @@
-# Clients send logs to Distributors
+# Posting logs to Distributors
+
+
 
 ![](<../.gitbook/assets/image (2).png>)
 

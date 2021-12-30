@@ -64,5 +64,20 @@ I split the streams by adding a few labels in them so that they are split and th
 
 ### Improving long time range query
 
+Queriers use the iterator pattern to select logs so it can stop loading when the result reaches the target size.&#x20;
 
+Therefore, the queries for searching the many logs which are generated in a short time are very fast even if the query time range is long because queriers can stop loading in progress.
 
+![](<.gitbook/assets/performance-improvement.drawio (2) (1).png>)
+
+However, the queries that time-range is long and logs to be matched are few tend to be slow because Loki must search for the longer time range.
+
+![](<.gitbook/assets/performance-improvement.drawio (2).png>)
+
+How should I address this issue?
+
+One way is to split a query by appropriate time range for processing in a querier.
+
+Also, we can scale up and out the queriers.
+
+Anyway, it is important to process queries in parallel that are not too long or too short for a single querier.

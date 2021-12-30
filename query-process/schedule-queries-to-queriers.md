@@ -1,4 +1,4 @@
-# Schedule queries to queriers
+# Query scheduling
 
 ### Overview
 

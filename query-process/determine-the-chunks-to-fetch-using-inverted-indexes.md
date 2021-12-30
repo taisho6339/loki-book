@@ -1,4 +1,4 @@
-# Determine the chunks to fetch using inverted indexes
+# Select the chunks by inverted index
 
 ### Overview
 

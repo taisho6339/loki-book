@@ -1,4 +1,4 @@
-# Ingesters buffer log chunks
+# Buffering log chunks on memory
 
 ### How to handle log post request
 

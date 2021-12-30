@@ -1,4 +1,4 @@
-# Flush memory chunks
+# Flushing memory chunks
 
 ### When the chunks are flushed to AWS S3?
 
