@@ -36,7 +36,7 @@ There are some very important parameters to determine the flush time.
 
 They are `max_chunk_age` and `chunk_idle_period.`
 
-![](<.gitbook/assets/performance-improvement.drawio (1) (1).png>)
+![](.gitbook/assets/flush-reason-graph.png)
 
 Chunk reaches `max_chunk_age` or `chunk_idle_period` or `chunk_target_size` and then it is enqueued in a flush queue as this graph shows.
 
@@ -68,11 +68,11 @@ Queriers use the iterator pattern to select logs so it can stop loading when the
 
 Therefore, the queries for searching the many logs which are generated in a short time are very fast even if the query time range is long because queriers can stop loading in progress.
 
-![](<.gitbook/assets/performance-improvement.drawio (2) (1).png>)
+![](.gitbook/assets/fast-query-example.png)
 
 However, the queries that time-range is long and logs to be matched are few tend to be slow because Loki must search for the longer time range.
 
-![](<.gitbook/assets/performance-improvement.drawio (2).png>)
+![](.gitbook/assets/slow-query-example.png)
 
 How should I address this issue?
 
