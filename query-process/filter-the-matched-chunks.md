@@ -10,7 +10,7 @@ As a next step, they create an iterator to load chunks.
 
 It is constructed with the chunks from all of the ingesters which are actual chunks and the chunk keys which are called "Lazy chunks".
 
-![](<../.gitbook/assets/スクリーンショット 2021-12-28 23.47.30.png>)
+![](<../.gitbook/assets/query-process-create-chunk-iterator.png>)
 
 The lazy chunks don't have real ones at first but they will download them from cache or BoltDB once they are loaded in the iteration process.
 
@@ -26,4 +26,4 @@ If the element is matched with the query, it will be added to the result.
 
 The querier will repeat this until the response limit is reached and then return it to the query-frontend address specified in the query request.
 
-![](<../.gitbook/assets/スクリーンショット 2021-12-29 0.04.58 (2).png>)
+![](<../.gitbook/assets/query-process-chunk-iterator.png>)

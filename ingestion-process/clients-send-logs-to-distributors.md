@@ -2,7 +2,7 @@
 
 
 
-![](<../.gitbook/assets/image (2).png>)
+![](<../.gitbook/assets/ingestion-process-client-request-body.png>)
 
 Loki clients construct log bodies and tenant-id as HTTP requests.
 

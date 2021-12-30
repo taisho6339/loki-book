@@ -15,7 +15,7 @@ They are enqueued to a flush queue and flushed in order.
 
 Here is the design for flushing.
 
-![](<../.gitbook/assets/image (6).png>)
+![](<../.gitbook/assets/ingestion-process-flush-design.png>)
 
 A goroutine observes all of the streams and checks if the chunks in each stream match the flush conditions. If some chunks match them, it enqueues them for flushing.
 

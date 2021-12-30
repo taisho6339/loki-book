@@ -10,7 +10,7 @@ Each ingester instance has its own token and distributors distribute traffics to
 
 At first, it generates the hash value from tenant-id and stream(label key-value pair).
 
-![](<../.gitbook/assets/image (5).png>)
+![](<../.gitbook/assets/ingestion-process-generate-hash-tenant-stream.png>)
 
 And then, the distributor requires the matched ingester instances with the generated hash value.
 
@@ -20,4 +20,4 @@ It means that the distributor sends logs to some ingesters in duplicate to repli
 
 Finally, it regards the request as successful if more ingesters than half return 200 status.
 
-![](<../.gitbook/assets/image (8).png>)
+![](<../.gitbook/assets/ingestion-process-request-ingesters.png>)

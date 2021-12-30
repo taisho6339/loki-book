@@ -14,7 +14,7 @@ You can get the following understandings here.
 
 ### Components for query
 
-![](<../.gitbook/assets/スクリーンショット 2021-12-23 19.49.54.png>)
+![](<../.gitbook/assets/query-process-overview.png>)
 
 Here are the components to query logs.
 

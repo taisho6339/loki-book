@@ -6,7 +6,7 @@ Let's see how ingesters handle the requests.
 
 At first, coming logs are appended to "memory chunk" on memory by each stream.
 
-![](<../.gitbook/assets/image (4).png>)
+![](<../.gitbook/assets/ingestion-process-append-stream.png>)
 
 In addition, the write-ahead log for each log is written on Ingester's disk to prevent it from losing log data unexpectedly. (described later)
 
@@ -24,7 +24,7 @@ The ingesters have a data structure to buffer logs called "memory chunk".
 
 The memory chunk is constructed like this image.
 
-![](<../.gitbook/assets/image (1).png>)
+![](<../.gitbook/assets/ingestion-process-memory-chunk.png>)
 
 It has an array called "Head" and another one called "Blocks".
 
@@ -46,7 +46,7 @@ The answer is using inverted indexes.
 
 An ingester has inverted indexes on their memory like the following image.
 
-![](../.gitbook/assets/memory-chunk-inverted-index.png)
+![](../.gitbook/assets/ingestion-process-memory-chunk-inverted-index.png)
 
 They are map structures that map label key-value pairs to each stream fingerprint.
 

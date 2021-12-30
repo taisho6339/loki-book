@@ -14,7 +14,7 @@ The queued query request has an original query-frontend address so that it can r
 
 Here is the overall figure for processing a query.
 
-![](<../.gitbook/assets/query\_schedule\_parameter.drawio (1).png>)
+![](<../.gitbook/assets/query-process-query-frontendv1.png>)
 
 In conclusion, this architecture has some advantages as listed.
 
@@ -25,15 +25,15 @@ That's how we can use queriers efficiently.
 
 ### What is query-scheduler
 
-In 2.4.0 newer version, query-scheduler is released.&#x20;
+In 2.4.0 newer version, query-scheduler is released.
 
 This is the component that cuts out the query request queue from query-frontend.
 
 Here is how it works.
 
-![How to schedule queries with query-scheduler](../.gitbook/assets/query\_scheduler\_v2.drawio.png)
+![How to schedule queries with query-scheduler](../.gitbook/assets/query-process-query-frontendv2.png)
 
-Query-schedulers have each request queue.&#x20;
+Query-schedulers have each request queue.
 
 At first, a query-frontend receives a query request and enqueues it to a request queue.
 
@@ -45,14 +45,14 @@ That's how a dependency between the query-frontend and querier has gone away.
 
 ### Why do we need the query-scheduler?
 
-Older architecture has an issue with scaling.&#x20;
+Older architecture has an issue with scaling.
 
-Each querier has the configured number of connections to query-frontends.&#x20;
+Each querier has the configured number of connections to query-frontends.
 
-It is configured by "querier.worker-parallelism" or "querier.max-concurrent".&#x20;
+It is configured by "querier.worker-parallelism" or "querier.max-concurrent".
 
-It means that query-frontend can't scale more than the parameter.&#x20;
+It means that query-frontend can't scale more than the parameter.
 
-However, the new architecture with query-scheduler allows us to scale query-frontends regardless of the queriers.&#x20;
+However, the new architecture with query-scheduler allows us to scale query-frontends regardless of the queriers.
 
 The query-frontend doesn't depend on them anymore.

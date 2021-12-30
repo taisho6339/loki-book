@@ -14,7 +14,7 @@ You can get the following understandings.
 
 ### Components for ingestion
 
-![Ingestion Overview](../.gitbook/assets/loki-book-ingestion.drawio.png)
+![Ingestion Overview](../.gitbook/assets/ingestion-process-overview.png)
 
 Here are the components to ingest logs.
 

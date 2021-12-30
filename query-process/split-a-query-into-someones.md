@@ -29,7 +29,7 @@ The inverted indexes are split by shard number in advance in the ingestion proce
 
 Therefore, in the query process, query-frontend splits a query by shard count and automatically adds shard number in each query so that the query is processed by multiple queriers in parallel.
 
-![](<../.gitbook/assets/スクリーンショット 2021-12-23 21.25.18.png>)
+![](<../.gitbook/assets/query-process-split-logql-by-shard.png>)
 
 It means that the target chunks that are processed in each querier are fewer than before splitting.
 

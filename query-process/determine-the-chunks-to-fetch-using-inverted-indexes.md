@@ -26,7 +26,7 @@ Series-id is the id of a stream.
 
 The series-id is constructed with the hash value of label name and value pairs.
 
-![](../.gitbook/assets/series-id.png)
+![](../.gitbook/assets/query-process-series-id.png)
 
 #### Chunk Key
 
@@ -34,7 +34,7 @@ Chunk-key is the unique key of a chunk.
 
 The chunk key is constructed with the tenant-id, the hash value of label key and value pairs, chunk created time, and chunk closed time.
 
-![](../.gitbook/assets/chunk-key.png)
+![](../.gitbook/assets/query-process-chunk-key.png)
 
 #### Inverted Index
 
@@ -44,7 +44,7 @@ Also, there are some kinds of tables and they are to identify series-ids and chu
 
 At first, here is the table definition to identify series-ids by label names or label values.
 
-![A table to identify SeriesID by label key-value](<../.gitbook/assets/スクリーンショット 2021-12-28 16.42.49 (1).png>)
+![A table to identify SeriesID by label key-value](<../.gitbook/assets/query-process-inverted-index-def-series-id.png>)
 
 It has three columns and its row is unique with "hash value" and "range value" columns as well as DynamoDB.
 
@@ -52,7 +52,7 @@ We can search with a prefix of the range value and sort the results with it.
 
 An actual table example helps us to understand.
 
-![](../.gitbook/assets/inverted-index.png)
+![](../.gitbook/assets/query-process-inverted-index-example.png)
 
 There are all of the mappings between each stream-id and each label key-value pair.
 
@@ -62,7 +62,7 @@ It means that high cardinality labels cause too many rows and decreases performa
 
 Second, here is the table to identify chunk-keys by series-ids.
 
-![](<../.gitbook/assets/スクリーンショット 2021-12-28 21.14.55.png>)
+![](<../.gitbook/assets/query-process-inverted-index-get-chunk-keys.png>)
 
 It can be scanned with series-ids, tenant-ids, and time range to get chunk keys.
 
@@ -80,11 +80,11 @@ How does a querier process it?
 
 At first, the querier splits the query with labels and filter expressions, and then it uses only labels to search logs using the inverted indexes.
 
-![](<../.gitbook/assets/スクリーンショット 2021-12-28 21.22.18.png>)
+![](<../.gitbook/assets/query-process-logql.png>)
 
 Second, it splits label pairs and retrieves the matched stream-ids for each pair.
 
-![](<../.gitbook/assets/スクリーンショット 2021-12-28 21.30.43.png>)
+![](<../.gitbook/assets/query-process-split-label-pair.png>)
 
 In this case, it scans the table to get matched stream-ids with "service=keystone" or "hostname=host1".
 
@@ -94,7 +94,7 @@ On the other hand, it also searches the rows which have "hostname" in "hash valu
 
 Of course, the index cache is scanned at first and if not found, BoltDB is called and the results will be cached.
 
-![](<../.gitbook/assets/スクリーンショット 2021-12-29 22.42.55.png>)
+![](<../.gitbook/assets/query-process-inverted-index-table-match-series-ids.png>)
 
 The result series-ids for "service=keystone" are "c79abadeff" and "bffjk12ass".
 
@@ -102,13 +102,13 @@ On the other hand, the result for "hostname=host1" are "c79abadeff" and "vk1abad
 
 The querier remains only the stream-id in both results so "c79abadeff" is the final answer here.
 
-![](<../.gitbook/assets/スクリーンショット 2021-12-28 21.41.26.png>)
+![](<../.gitbook/assets/query-process-inverted-index-get-series-ids.png>)
 
 The series-id is used to select chunk keys.
 
 Here is an example to match the series-id "c79abadeff" and 5 min after 2021/10/26 21:52.
 
-![](<../.gitbook/assets/スクリーンショット 2021-12-28 21.54.12.png>)
+![](<../.gitbook/assets/query-process-inverted-index-match-chunk-key.png>)
 
 In this case, "chunk1" is the target chunk key.
 
@@ -124,6 +124,6 @@ Therefore, when a querier receives a query request, it knows the shard number.
 
 In addition, the inverted index table actually has the shard number in "range value" column so that the querier can get the series-ids that are split by that.
 
-![](<../.gitbook/assets/スクリーンショット 2021-12-28 22.54.56.png>)
+![](<../.gitbook/assets/query-process-inverted-index-integrate-sharding.png>)
 
 That's how we can process a query in parallel.

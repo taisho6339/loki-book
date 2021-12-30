@@ -16,7 +16,7 @@ So, What happens when the storage fails?
 
 Here is the image.
 
-![](<.gitbook/assets/スクリーンショット 2021-12-30 12.17.43.png>)
+![](<.gitbook/assets/design-for-failure-storage-failure.png>)
 
 The goroutine which flushes chunks to AWS S3 in an ingester is affected.
 
@@ -64,7 +64,7 @@ Of course, WAL works fine for that but Loki doesn't stop ingestions even if writ
 
 Replication factor is also helpful to address this issue but it maybe better to use zone aware replication for availability zone failure.
 
-![](.gitbook/assets/zone-aware-ingester.png)
+![](.gitbook/assets/design-for-failure-zone-aware-ingester.png)
 
 For example, we imagine that a chunk is wrriten to two ingesters in AZ-1 like this image.
 

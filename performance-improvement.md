@@ -14,7 +14,7 @@ Smaller chunks make us download more chunks to select logs.
 
 It means that too many network communications happen and more decoding time for each chunk is needed due to compression.
 
-![](.gitbook/assets/performance-improvement.drawio.png)
+![](.gitbook/assets/performance-improvement-small-chunk.png)
 
 Increasing target chunk size enables us to reduce the network communications and decoding time.
 
@@ -36,7 +36,7 @@ There are some very important parameters to determine the flush time.
 
 They are `max_chunk_age` and `chunk_idle_period.`
 
-![](.gitbook/assets/flush-reason-graph.png)
+![](<.gitbook/assets/performance-improvement-flush-reason-graph.png>)
 
 Chunk reaches `max_chunk_age` or `chunk_idle_period` or `chunk_target_size` and then it is enqueued in a flush queue as this graph shows.
 
@@ -68,11 +68,11 @@ Queriers use the iterator pattern to select logs so it can stop loading when the
 
 Therefore, the queries for searching the many logs which are generated in a short time are very fast even if the query time range is long because queriers can stop loading in progress.
 
-![](.gitbook/assets/fast-query-example.png)
+![](<.gitbook/assets/performance-improvement-fast-query-example.png>)
 
 However, the queries that time-range is long and logs to be matched are few tend to be slow because Loki must search for the longer time range.
 
-![](.gitbook/assets/slow-query-example.png)
+![](<.gitbook/assets/performance-improvement-slow-query-example.png>)
 
 How should I address this issue?
 
