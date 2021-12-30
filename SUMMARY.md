@@ -24,4 +24,4 @@
 * [Clustering](clustering.md)
 * [Tips](tips/README.md)
   * [How to retain data in each component](tips/how-to-retain-data-in-each-component.md)
-  * [Component table](tips/component-table.md)
+  * [Stateless or Stateful?](tips/component-table.md)
