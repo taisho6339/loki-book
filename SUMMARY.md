@@ -26,3 +26,4 @@
   * [Failure stories](tips/failure-stories.md)
   * [How to retain data in each component](tips/how-to-retain-data-in-each-component.md)
   * [Stateless or Stateful?](tips/component-table.md)
+* [Contribution](contribution.md)
