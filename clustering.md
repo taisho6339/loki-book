@@ -10,7 +10,7 @@ How do they achieve that?
 
 ![](.gitbook/assets/clustering-architecture.png)
 
-Here is the architecture for the example, which is the ingester cluster.
+Here is the architecture for an example, which is the ingester cluster.
 
 Ingesters register their own state to centralized KV store according to their lifecycles.
 

@@ -8,7 +8,7 @@ This section can't cover all of the cases but these tips were helpful for my use
 
 ### Storage failure
 
-The products which have 100% availability don't exist in this world, AWS S3 can have outages.
+The products which have 100% availability can't exist in this world, AWS S3 can have outages.
 
 It means that we need to pay attention to the storage failure.
 
@@ -16,17 +16,17 @@ So, What happens when the storage fails?
 
 Here is the image.
 
-![](<.gitbook/assets/design-for-failure-storage-failure.png>)
+![](.gitbook/assets/design-for-failure-storage-failure.png)
 
 The goroutine which flushes chunks to AWS S3 in an ingester is affected.
 
-However, the writing logs to ingesters will be successful because the flushing is asynchronized.
+However, the writing logs to ingesters from distributors will be successful because the flushing is asynchronized.
 
 It means that more and more memory chunks and write-ahead logs will be increasing while the failure.
 
 It causes OOM and once it happens, it is hard to restart the ingester process because the recovery process from WAL will be started before restarting and the WAL is the snapshot of memory chunks so it's going to cause OOM again.
 
-We need to configure appropriate resource requests to the ingesters in advance to address this issue.
+We need to configure appropriate resources(especially memory) to the ingesters in advance to address this issue.
 
 At least, we need to satisfy this formula.
 
@@ -62,7 +62,9 @@ When some ingesters are down, unflushd chunks on them can be lost.
 
 Of course, WAL works fine for that but Loki doesn't stop ingestions even if writing WAL is failed so it's not perfect.
 
-Replication factor is also helpful to address this issue but it maybe better to use zone aware replication for availability zone failure.
+Also, we can't get the logs while the failure even if we have WAL.
+
+Replication factor is also helpful to address this issue but it maybe better to use zone aware replication for zone failure.
 
 ![](.gitbook/assets/design-for-failure-zone-aware-ingester.png)
 
@@ -70,9 +72,7 @@ For example, we imagine that a chunk is wrriten to two ingesters in AZ-1 like th
 
 If AZ-1 is failiure, chunk1 will be lost in this case.
 
-How should I address that?
-
-We can use zone aware replication.
+That's why we should use zone-aware replication.
 
 {% embed url="https://grafana.com/docs/loki/latest/configuration#ring_config" %}
 

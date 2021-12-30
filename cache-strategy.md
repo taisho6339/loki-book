@@ -17,11 +17,11 @@ Index-read-cache caches inverted indexes.
 
 Queriers use this cache before they ask BoltDB or Index Gateway for them.
 
-In addition, the inverted indexed will be cached in this cache only when they are missed there.
+In addition, the inverted indexed will be cached in this cache only when they are missed there in query processes.
 
 ### Index write cache
 
-Index-write-cache is used to avoid duplicate writing the indexes.
+Index-write-cache is used to avoid duplicate writing indexes.
 
 Ingesters use this cache and the indexes are written on it when flushing chunks.
 
@@ -47,7 +47,7 @@ The ingesters write chunks to persistent storage like AWS S3 and then, write the
 
 It is also used to reduce duplicate writing chunks in ingesters.
 
-The ingesters check if the chunk key already exists before writing and if already exists, they will stop.
+The ingesters check if the chunk key already exists before writing and if exists, they will stop.
 
 Typically, memcached is used for that but it doesn't like to receive chunks that are more than 500KiB so the writing to this cache can fail frequently.
 

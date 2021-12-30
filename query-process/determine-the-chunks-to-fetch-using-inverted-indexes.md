@@ -4,17 +4,17 @@
 
 After querying for all of the ingesters, a querier tries to select flushed chunks using inverted indexes. And then, the chunks are filtered and returned to the query-frontend.
 
-### What is "inverted index"?  Why does Loki use it?
+### What is "inverted index"? Why does Loki use it?
 
 "Inverted index" is also used in full-text search engines like Elasticsearch.
 
-This is the data structure, which aims to search logs based on label values efficiently.
+This is the data structure, which aims to search logs according to label values efficiently.
 
 In Loki, the log chunks have unique IDs to identify.
 
-The inverted index has the mapping between label key-values and chunk IDs so that we can select the chunks with label keys or values in performant.&#x20;
+The inverted index has the mapping between label key-values and chunk IDs so that we can select the chunks with label keys or values in performant.
 
-If Loki doesn't use it, it would spend a lot of time retrieving large amount of logs.
+If Loki doesn't use it, it would spend a lot of time retrieving a large number of logs.
 
 ### The structure of the inverted index
 
@@ -38,13 +38,13 @@ The chunk key is constructed with the tenant-id, the hash value of label key and
 
 #### Inverted Index
 
-Inverted index is managed as a table like DynamoDB.&#x20;
+Inverted index is managed as a table like DynamoDB.
 
 Also, there are some kinds of tables and they are to identify series-ids and chunk keys.
 
 At first, here is the table definition to identify series-ids by label names or label values.
 
-![A table to identify SeriesID by label key-value](<../.gitbook/assets/query-process-inverted-index-def-series-id.png>)
+![A table to identify SeriesID by label key-value](../.gitbook/assets/query-process-inverted-index-def-series-id.png)
 
 It has three columns and its row is unique with "hash value" and "range value" columns as well as DynamoDB.
 
@@ -56,13 +56,11 @@ An actual table example helps us to understand.
 
 There are all of the mappings between each stream-id and each label key-value pair.
 
-For example, the stream-ids which have "service=keystone" in their labels like "{service=keystone, hostname=host1}" and "{service=keystone, hostname=host2}" are recorded with "service" hash value and "keystone" value.
-
-It means that high cardinality labels cause too many rows and decreases performance.
+For example, "c79abadeff" is the id of the stream "{service=keystone, hostname=host1}" and it is recorded twice with "service=keystone" and "hostname=host1".
 
 Second, here is the table to identify chunk-keys by series-ids.
 
-![](<../.gitbook/assets/query-process-inverted-index-get-chunk-keys.png>)
+![](../.gitbook/assets/query-process-inverted-index-get-chunk-keys.png)
 
 It can be scanned with series-ids, tenant-ids, and time range to get chunk keys.
 
@@ -78,13 +76,13 @@ We can query this LogQL to select the logs, which have "keystone" as the service
 
 How does a querier process it?
 
-At first, the querier splits the query with labels and filter expressions, and then it uses only labels to search logs using the inverted indexes.
+At first, the querier splits the query into labels and filter expressions, and then it uses only labels to search logs using the inverted indexes.
 
-![](<../.gitbook/assets/query-process-logql.png>)
+![](../.gitbook/assets/query-process-logql.png)
 
 Second, it splits label pairs and retrieves the matched stream-ids for each pair.
 
-![](<../.gitbook/assets/query-process-split-label-pair.png>)
+![](../.gitbook/assets/query-process-split-label-pair.png)
 
 In this case, it scans the table to get matched stream-ids with "service=keystone" or "hostname=host1".
 
@@ -92,27 +90,29 @@ It searches the rows which have "service" in "hash value", hashed "keystone" in 
 
 On the other hand, it also searches the rows which have "hostname" in "hash value", hashed "host1" in "range value", and "host1" in "value" column in parallel.
 
-Of course, the index cache is scanned at first and if not found, BoltDB is called and the results will be cached.
+By the way, the index cache is scanned at first and if not found, BoltDB is called and the results will be cached.
 
-![](<../.gitbook/assets/query-process-inverted-index-table-match-series-ids.png>)
+![](../.gitbook/assets/query-process-inverted-index-table-match-series-ids.png)
 
 The result series-ids for "service=keystone" are "c79abadeff" and "bffjk12ass".
 
-On the other hand, the result for "hostname=host1" are "c79abadeff" and "vk1abadeff".
+In addition, the result for "hostname=host1" are "c79abadeff" and "vk1abadeff".
 
 The querier remains only the stream-id in both results so "c79abadeff" is the final answer here.
 
-![](<../.gitbook/assets/query-process-inverted-index-get-series-ids.png>)
+![](../.gitbook/assets/query-process-inverted-index-get-series-ids.png)
 
 The series-id is used to select chunk keys.
 
 Here is an example to match the series-id "c79abadeff" and 5 min after 2021/10/26 21:52.
 
-![](<../.gitbook/assets/query-process-inverted-index-match-chunk-key.png>)
+![](../.gitbook/assets/query-process-inverted-index-match-chunk-key.png)
 
 In this case, "chunk1" is the target chunk key.
 
 That's how the querier gathers the matched chunk keys for the given query.
+
+By the way, high cardinality labels cause too many rows in these tables and decrease performance.
 
 ### How to collaborate with query-sharding
 
@@ -124,6 +124,6 @@ Therefore, when a querier receives a query request, it knows the shard number.
 
 In addition, the inverted index table actually has the shard number in "range value" column so that the querier can get the series-ids that are split by that.
 
-![](<../.gitbook/assets/query-process-inverted-index-integrate-sharding.png>)
+![](../.gitbook/assets/query-process-inverted-index-integrate-sharding.png)
 
 That's how we can process a query in parallel.

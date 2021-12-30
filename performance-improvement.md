@@ -2,7 +2,7 @@
 
 ### Overview
 
-In this section, I'll show you the tips to improve Loki's performance in my environment, 20 TB / day.
+In this section, I'll show you the tips to improve Loki's performance.
 
 Basically, splitting a query, increasing querier instances, and increasing chunk size are the ways to improve performance but there are some points to consider.
 
@@ -10,13 +10,13 @@ Basically, splitting a query, increasing querier instances, and increasing chunk
 
 A way what we can try at first to improve query performance is increasing a chunk size.
 
-Smaller chunks make us download more chunks to select logs.
+Smaller chunks make queriers download more chunks to select logs.
 
-It means that too many network communications happen and more decoding time for each chunk is needed due to compression.
+It means that too many network communications happen and more decoding time for each chunk is needed.
 
 ![](.gitbook/assets/performance-improvement-small-chunk.png)
 
-Increasing target chunk size enables us to reduce the network communications and decoding time.
+Increasing target chunk size enables queriers to reduce the network communications and decoding time.
 
 In addition, overall of the compression rate of chunks will be improved because the metadata in chunks is reduced.
 
@@ -36,7 +36,7 @@ There are some very important parameters to determine the flush time.
 
 They are `max_chunk_age` and `chunk_idle_period.`
 
-![](<.gitbook/assets/performance-improvement-flush-reason-graph.png>)
+![](.gitbook/assets/performance-improvement-flush-reason-graph.png)
 
 Chunk reaches `max_chunk_age` or `chunk_idle_period` or `chunk_target_size` and then it is enqueued in a flush queue as this graph shows.
 
@@ -56,27 +56,29 @@ It works fine and the streams are routed roughly evenly.
 
 However, there was the case, where only specific streams have large amounts of logs.
 
-It means that the streams are balanced evenly but traffic to append logs was unbalanced and too much access to specific instances happened so the ingesters were too busy and bottlenecked.
+It means that the streams are balanced evenly but traffic to append logs was unbalanced.
 
-However, I didn't like to increase all of the ingesters' resources.
+So too much access to specific instances happened and the ingesters were too busy and bottlenecked.
 
-I split the streams by adding a few labels in them so that they are split and the traffic was routed evenly as a workaround.
+I didn't like to increase all of the ingesters' resources so I split the streams by adding a few labels in them so that they are split and the traffic was routed evenly as a workaround.
 
 ### Improving long time range query
 
-Queriers use the iterator pattern to select logs so it can stop loading when the result reaches the target size.&#x20;
+Queriers use the iterator to select logs so it can stop loading when the result reaches the target size.
 
-Therefore, the queries for searching the many logs which are generated in a short time are very fast even if the query time range is long because queriers can stop loading in progress.
+Therefore, the queries for searching the many logs which are generated in a short time are very fast even if the query time range is long because queriers can stop in progress.
 
-![](<.gitbook/assets/performance-improvement-fast-query-example.png>)
+![](.gitbook/assets/performance-improvement-fast-query-example.png)
 
 However, the queries that time-range is long and logs to be matched are few tend to be slow because Loki must search for the longer time range.
 
-![](<.gitbook/assets/performance-improvement-slow-query-example.png>)
+![](.gitbook/assets/performance-improvement-slow-query-example.png)
 
 How should I address this issue?
 
 One way is to split a query by appropriate time range for processing in a querier.
+
+(Let's use splitting by time interval feature!)
 
 Also, we can scale up and out the queriers.
 
