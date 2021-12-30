@@ -2,10 +2,14 @@
 
 Average encoding chunk time
 
+In this section, I'll share the PromQL I use for production monitoring.
+
 ```
 sum(rate(loki_ingester_chunk_encode_time_seconds_sum{env="$environment"} [5m])) by(component,kubernetes_pod_name)
 / sum(rate(loki_ingester_chunk_encode_time_seconds_count{env="$environment"} [5m])) by(component,kubernetes_pod_name) * 1000
 ```
+
+
 
 Average chunk utilization
 
