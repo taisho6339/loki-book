@@ -24,7 +24,7 @@ However, the writing logs to ingesters from distributors will be successful beca
 
 It means that more and more memory chunks and write-ahead logs will be increasing while the failure.
 
-It causes OOM and once it happens, it is hard to restart the ingester process because the recovery process from WAL will be started before restarting and the WAL is the snapshot of memory chunks so it's going to cause OOM again.
+It causes OOM and once it happens, it is hard to restart the ingester process because the recovery process from WAL will be started before the restarting and the WAL is the snapshot of memory chunks so it's going to cause OOM again.
 
 We need to configure appropriate resources(especially memory) to the ingesters in advance to address this issue.
 
@@ -48,7 +48,7 @@ I said that queriers create an iterator and load chunks from it one by one in th
 [filter-the-matched-chunks.md](query-process/filter-the-matched-chunks.md)
 {% endcontent-ref %}
 
-Query requst will be failed when queriers try to load from AWS S3 while the storage failure.
+Query request will be failed when queriers try to load from AWS S3 while the storage failure.
 
 Therefore, the request which all of results are in cache or memories on ingesters will be successfull, otherwise failed.
 

@@ -1,3 +1,3 @@
 # How to retain data in each component
 
-![How to retain data in each component](../.gitbook/assets/tips-how-to-retain-data.png)
+![How to retain data](../.gitbook/assets/tips-how-to-retain-data.png)
