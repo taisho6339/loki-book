@@ -1,14 +1,12 @@
 # Posting logs to Distributors
 
+![](../.gitbook/assets/ingestion-process-client-request-body.png)
 
+Loki clients construct log body and tenant-id as HTTP requests.
 
-![](<../.gitbook/assets/ingestion-process-client-request-body.png>)
+The clients annotate tenant-id to HTTP Header so that Loki can recognize which tenant of logs it receives.
 
-Loki clients construct log bodies and tenant-id as HTTP requests.
-
-When it comes to tenant-id, the clients annotate the id to HTTP Header so that Loki can recognize which tenant of logs it receives.
-
-About the request body, it has three kinds of fields, which are stream, timestamp, and actual log body.
+The request body has three kinds of fields, which are stream, timestamp, and actual log body.
 
 Here is the actual format.
 
@@ -32,9 +30,9 @@ Here is the actual format.
 
 The logs should have some labels like Prometheus.
 
-We call the unique pattern that is a combination of tenant-id and label key-values "stream".
+We call the unique pattern that is a combination of tenant-id and label key-value pairs "stream".
 
-The logs are going to be chunked and managed in every stream.
+The logs are going to be chunked and managed in every stream in ingesters.
 
 #### Validation
 
@@ -56,7 +54,7 @@ If the rate limit mode is 'global', distributors will be clustered so that they 
 
 It means that distributors are clustered for the validation.
 
-If you want to know more detail about the clustering, please see here.&#x20;
+If you want to know more detail about how to cluster, please read this chapter.
 
 {% content-ref url="../clustering.md" %}
 [clustering.md](../clustering.md)

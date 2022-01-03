@@ -2,13 +2,13 @@
 
 ### Overview
 
-Ingesters are clustered as well and distributors can know which instances are healthy.
+Ingesters are clustered as well as distributors so distributors can know which instances are healthy.
 
-Each ingester instance has its own token and distributors distribute traffics to some of them by using "Consistent Hash" algorithm.
+Each ingester instance has its own token and distributors route traffics to some of healthy them by using the consistent-hash algorithm.
 
 ### How does it route?
 
-At first, it generates the hash value from tenant-id and stream(label key-value pair).
+At first, it generates the hash value from the stream.
 
 ![](../.gitbook/assets/ingestion-process-generate-hash-tenant-stream.png)
 
@@ -18,6 +18,6 @@ It doesn't require only an instance but also the replication factor number of in
 
 It means that the distributor sends logs to some ingesters in duplicate to replicate them.
 
-Finally, it regards the request as successful if more the got ingesters than half return 200 status.
+Finally, it regards the request as successful if more the got ingesters than half return HTTP 200 status.
 
 ![](../.gitbook/assets/ingestion-process-request-ingesters.png)

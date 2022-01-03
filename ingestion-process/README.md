@@ -28,25 +28,21 @@ Let me introduce them in order.
 
 These components collect logs from your applications and send them to Loki via Distributor's HTTP endpoint.
 
-Sending via the API allows us to build our own client.
-
 #### Distributor
 
-This component has the responsibility to validate the ingestion requests and distribute them to appropriate ingesters.
+This component has the responsibility to validate the ingestion requests and distribute them to appropriate ingesters according to the consistent-hash algorithm.
 
 #### Ingester
 
-This component has the responsibility to post logs to the storage engine like S3 and cache them to the chunk cache. (Memcached, Redis, etc)
-
-In addition, it buffers those logs on memory temporally.
+This component has the responsibility to buffer logs on memory temporally and post logs to the storage engine like S3 and cache them to the chunk cache like Memcache or Redis.
 
 #### AWS S3 as Storage Engine
 
-The logs are stored in this persistently.
+The logs are stored here persistently.
 
 This layer also supports Cassandra, GCS, DynamoDB, and the other products.
 
-Here are the supported stores.
+Here are the supported storage products.
 
 [Supported Stores](https://grafana.com/docs/loki/latest/operations/storage/)
 

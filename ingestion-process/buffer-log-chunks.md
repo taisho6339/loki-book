@@ -1,4 +1,4 @@
-# Buffering log chunks on memory
+# Buffering log chunks on memory in Ingesters
 
 ### How to handle log post request
 
@@ -12,13 +12,11 @@ In addition, the write-ahead log for each log is written on Ingester's disk to p
 
 Lastly, if the appending is succeeded, ingester returns success as gRPC response.
 
-
-
-The chunks aren't stored in remote storage like AWS S3 immediately.
+By the way, the chunks aren't stored in remote storage like AWS S3 immediately.
 
 They are buffered unless they satisfy some conditions.
 
-If they satisfy those conditions, ingesters will flush them to remote storage.
+If they satisfy, ingesters will flush them to remote storage.
 
 ### Memory Chunk
 
@@ -28,13 +26,21 @@ The memory chunk is constructed like this image.
 
 ![](../.gitbook/assets/ingestion-process-memory-chunk.png)
 
-It has an array called "Head" and another one "Blocks".
+It has two arrays, which are called "Head" and "Blocks".
 
 At first, incoming logs are appended to "Head" with keeping the raw data.
 
-When its size reaches "chunk\__block_\_size", the ingester will compress the all of elements in "Head" into a block.
+When its size reaches "chunk\__block_\_size", the ingester will compress the all of elements in "Head" into a block and then append it to "Blocks".
+
+The block is encoded as this link.
+
+{% embed url="https://grafana.com/docs/loki/next/fundamentals/architecture#block-format" %}
 
 When the total size of the memory chunk reaches "chunk\_target\_size", Ingester makes it read-only mode and appends it to a flush queue.
+
+Finally, it is encoded as "chunk format" in this link.
+
+{% embed url="https://grafana.com/docs/loki/next/fundamentals/architecture#chunk-format" %}
 
 Does buffering logs mean that we can't query for recent logs?
 
@@ -46,13 +52,17 @@ The answer is using inverted indexes.
 
 ### Inverted Index for memory chunks
 
-An ingester has inverted indexes on their memory like the following image.
+Ingesters have inverted indexes on their memory like the following image.
 
 ![](../.gitbook/assets/ingestion-process-memory-chunk-inverted-index.png)
 
 This is a map structure that maps label key-value pairs to each stream fingerprint.
 
-The fingerprints are generated as hash values of label key-value pairs for each stream.
+The label name as the key has a map that has the label values as the keys and stream fingerprint as values.
+
+In other words, it is a nested map structure.
+
+The fingerprints are generated as hash values of label key-value pairs of each stream.
 
 For example, a stream `{service="`nginx", hostname="host1"`}`is converted to a fingerprint, which is "fingerprint1" and it is attached to service=nginx and hostname="host1" entries in the map.
 

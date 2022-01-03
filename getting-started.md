@@ -20,6 +20,6 @@ It saves us a lot of money in case of a large number of logs and we don't need t
 
 ### Use case
 
-**People who want to store their large number of logs with low cost and hyper-scale storage should use Loki!**
+**People who want to store their large number of logs at low cost should use Loki!**
 
 I need to store 20 TB logs per day at least, the cost should be very high so Loki is suitable.
