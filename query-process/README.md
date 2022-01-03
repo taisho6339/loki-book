@@ -14,13 +14,13 @@ You can get the following understandings here.
 
 ### Components for query
 
-![](<../.gitbook/assets/query-process-overview.png>)
+![](../.gitbook/assets/query-process-overview.png)
 
 Here are the components to query logs.
 
 #### Ingesters
 
-Ingesters are here to be queried for unflushed logs.
+Ingesters are to be queried for unflushed logs.
 
 #### Query Frontend
 
@@ -63,13 +63,13 @@ You can know more details about it.
 
 ### Read Path
 
-Here is the Read Path in Loki.
+Here is the "Read Path" in Loki.
 
 1. A query-frontend receives a query request and splits them into someones
-2. The query-frontend enqueue some queries and some queriers get some queries from the queue
-3. A querier requests for all of the ingesters to select unflushed logs
-4. The querier gets the target chunks using inverted indexes in index cache or BoltDB
-5. The querier downloads the chunks from the chunk cache or AWS S3 and filters them
+2. The query-frontend enqueue some queries and some queriers get them from the queue
+3. A querier asks unflushed logs for all of the ingesters
+4. The querier determines the target chunks using inverted indexes in index cache or BoltDB
+5. The querier downloads the target chunks from the chunk cache or AWS S3 and filters them
 6. The query-frontend aggregates all of the results, sorts, removes duplicates, and then returns the result
 
 In further sections, I'll give you more detailed mechanisms.

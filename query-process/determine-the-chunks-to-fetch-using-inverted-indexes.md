@@ -8,11 +8,11 @@ After querying for all of the ingesters, a querier tries to select flushed chunk
 
 "Inverted index" is also used in full-text search engines like Elasticsearch.
 
-This is the data structure, which aims to search logs according to label values efficiently.
+This is the data structure, which aims to search logs according to label values efficiently here.
 
-In Loki, the log chunks have unique IDs to identify.
+In Loki, a log chunk has a unique ID to identify.
 
-The inverted index has the mapping between label key-values and chunk IDs so that we can select the chunks with label keys or values in performant.
+The inverted index has the mapping between label key-value pairs and chunk IDs so that we can select the chunks with label keys or values in performant.
 
 If Loki doesn't use it, it would spend a lot of time retrieving a large number of logs.
 
@@ -24,7 +24,7 @@ To understand the structure, we need to know "series-id" and "chunk-key".
 
 Series-id is the id of a stream.
 
-The series-id is constructed with the hash value of label name and value pairs.
+The series-id is constructed with the hash value of label key-value pairs.
 
 ![](../.gitbook/assets/query-process-series-id.png)
 
@@ -54,9 +54,9 @@ An actual table example helps us to understand.
 
 ![](../.gitbook/assets/query-process-inverted-index-example.png)
 
-There are all of the mappings between each stream-id and each label key-value pair.
+There are all of the mappings between each series-id and all of the label key-value pairs in the stream.
 
-For example, "c79abadeff" is the id of the stream "{service=keystone, hostname=host1}" and it is recorded twice with "service=keystone" and "hostname=host1".
+For example, "c79abadeff" is the series-id of the stream "{service=keystone, hostname=host1}" and it is recorded twice with "service=keystone" and "hostname=host1".
 
 Second, here is the table to identify chunk-keys by series-ids.
 
@@ -84,7 +84,7 @@ Second, it splits label pairs and retrieves the matched stream-ids for each pair
 
 ![](../.gitbook/assets/query-process-split-label-pair.png)
 
-In this case, it scans the table to get matched stream-ids with "service=keystone" or "hostname=host1".
+In this case, it scans the table to get matched series-ids with "service=keystone" or "hostname=host1".
 
 It searches the rows which have "service" in "hash value", hashed "keystone" in "range value", and "keystone" in "value" column.
 
@@ -98,7 +98,7 @@ The result series-ids for "service=keystone" are "c79abadeff" and "bffjk12ass".
 
 In addition, the result for "hostname=host1" are "c79abadeff" and "vk1abadeff".
 
-The querier remains only the stream-id in both results so "c79abadeff" is the final answer here.
+The querier remains only the series-id in both results so "c79abadeff" is the final answer here.
 
 ![](../.gitbook/assets/query-process-inverted-index-get-series-ids.png)
 
@@ -106,7 +106,7 @@ The series-id is used to select chunk keys.
 
 Here is an example to match the series-id "c79abadeff" and 5 min after 2021/10/26 21:52.
 
-![](../.gitbook/assets/query-process-inverted-index-match-chunk-key.png)
+![](../.gitbook/assets/query-process-matched-chunk-key.png)
 
 In this case, "chunk1" is the target chunk key.
 
@@ -120,9 +120,9 @@ In the previous section, I mentioned query-sharding, which split a query into so
 
 A query will be automatically split by the shard number in query-frontend.
 
-Therefore, when a querier receives a query request, it knows the shard number.
+Therefore, when a querier receives a query request, it knows the number.
 
-In addition, the inverted index table actually has the shard number in "range value" column so that the querier can get the series-ids that are split by that.
+In addition, the inverted index table actually has the shard number in "range value" column so that the querier can get the matched series-ids that are split by that.
 
 ![](../.gitbook/assets/query-process-inverted-index-integrate-sharding.png)
 

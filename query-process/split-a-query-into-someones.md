@@ -2,9 +2,9 @@
 
 ### Overview
 
-Query-frontend receives a query request and then splits them into someones.
+Query-frontend receives a query request and splits them into someones.
 
-The reason why it splits a query is that it increases the query parallelism and makes more queriers process in parallel. It gives you a performance improvement.
+The reason why it splits a query is because it increases the query parallelism and makes more queriers process in parallel. This gives us a performance improvement.
 
 There are two main strategies to split as listed.
 
@@ -27,10 +27,10 @@ In the query process, the queriers use inverted indexes to search logs.
 
 The inverted indexes are split by shard number in advance in the ingestion process.
 
-Therefore, in the query process, query-frontend splits a query by shard count and automatically adds shard number in each query so that the query is processed by multiple queriers in parallel.
+Therefore, in the query process, query-frontend splits a query into someones and automatically adds a shard number in each query so that the query is processed by multiple queriers in parallel.
 
-![](<../.gitbook/assets/query-process-split-logql-by-shard.png>)
+![](../.gitbook/assets/query-process-split-logql-by-shard.png)
 
-It means that the target chunks that are processed in each querier are fewer than before splitting.
+It means that the matched chunks that are determined in each querier are fewer than before splitting.
 
 Please read the further section to understand more detail about the query processing in parallel.

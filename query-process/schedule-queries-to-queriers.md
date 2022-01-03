@@ -37,9 +37,9 @@ Query-schedulers have each request queue.
 
 At first, a query-frontend receives a query request and enqueues it to a request queue.
 
-And then, the query is sent to a query-scheduler and enqueued in that.
+And then, the request is sent to a query-scheduler and enqueued in that.
 
-All of queriers observe the queues in query-schedulers and they get queries from them and process.
+All of queriers observe the queues in query-schedulers according to 'query.worker-parallelism' and they get queries from them and process.
 
 That's how a dependency between the query-frontend and querier has gone away.
 

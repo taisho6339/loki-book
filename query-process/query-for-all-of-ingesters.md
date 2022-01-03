@@ -4,10 +4,7 @@
 
 After receiving a query, a querier sends query requests for all of the ingesters at first.
 
-Ingesters have unflushed chunks in their memories and they are not in both cache and persistent storage, so the querier can retrieve the latest query results by doing that.
+Ingesters have unflushed chunks in their memories and they are not in both cache and persistent storage.
 
-In addition, the ingesters have also inverted indexes for unflushed chunks so they select logs using them when receiving requests.
+Therefore, the queriers need to also ask them for ingesters.
 
-{% content-ref url="broken-reference" %}
-[Broken link](broken-reference)
-{% endcontent-ref %}
