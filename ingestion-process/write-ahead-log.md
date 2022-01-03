@@ -29,13 +29,13 @@ A checkpoint file is created when the process runs.
 
 #### 1. Force to advance to a new segment file to start purge process
 
-So that the older segment file won't be written anymore and the writing segment file won't be deleted.
+So that the older segment file won't be written anymore and a deleting segment file won't be written.
 
 ![](../.gitbook/assets/ingestion-process-advance-segment.png)
 
-#### 2. A checkpoint file is created based on the streams on memory.
+#### 2. A checkpoint file is created from all of the streams on memory.
 
-It means that "checkpoint" is a snapshot of memory chunks at that time and it is compressed as well. (but "head" elements are not compressed either)
+It means that "checkpoint" is a snapshot of memory chunks at that time and it is compressed and encoded as well. (but "head" elements are not compressed either)
 
 ![](../.gitbook/assets/ingestion-process-wal-checkpoint-create.png)
 
