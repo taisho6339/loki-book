@@ -18,7 +18,7 @@ You can get the following understandings.
 
 Here are the components to ingest logs.
 
-Fluentd, Fluentd Bit, Logstash, and Pomtail are the clients for Loki, and Distributor and Ingester are Loki's components.
+Fluentd, Fluentd Bit, Logstash, and Promtail are the clients for Loki, and Distributor and Ingester are Loki's components.
 
 In addition, AWS S3 is a chunk and index storage and Memcache is a cache layer for them.
 
