@@ -46,7 +46,7 @@ sum(loki_ingester_memory_chunks{env="$environment", component="ingester"})by(com
 #### Flush queue
 
 ```
-sum(cortex_ingester_flush_queue_length{env="$environment"})by(env, kubernetes_pod_name, compoent) > 0
+sum(cortex_ingester_flush_queue_length{env="$environment"})by(env, kubernetes_pod_name, component) > 0
 ```
 
 #### Average encoding time(ms) for a chunk
